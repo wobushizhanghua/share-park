@@ -4,7 +4,7 @@
       <div class="row">
           <div class="span6">
               <ul class="nav nav-tabs">
-                  <li><a href="#"><<返回</a></li>
+                  <li><a href="#">&lt;&lt;返回</a></li>
                   <li><a href="#"></a></li>
                   <li><a href="#"></a></li>
                   <li class="pull-right"><a href="#" @click="logout">退出</a></li>
