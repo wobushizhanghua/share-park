@@ -5,3 +5,8 @@ also it is a demo how to use ‘Promise await async’ keywords to refine asynch
 
 in this app I use two cloud service as backend, 1th is *oneitfarm* that owened by myself, 2th is *leancloud*
 
+# how to dev
+````
+npm install
+npm run dev
+````
