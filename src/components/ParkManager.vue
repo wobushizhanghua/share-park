@@ -1,40 +1,58 @@
 <template>
   <div id="page-wrapper">
     <div class="row">
-      <div class="col-lg-4" v-for="store in stores">
-        <div :class="['panel', store.id===0 ? 'panel-info' : 'panel-success']">
+      <div class="form-group">
+        <label>当前状态：</label>
+        <button class="btn btn-lg btn-success" @click="AddPark">添加我的小区</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4" v-for="park in parklist">
+        <div class="panel panel-info">
           <div class="panel-heading">
-            <h3 class="panel-title">{{ store.name }}</h3>
+            <h3 class="panel-title">我的小区</h3>
           </div>
           <div class="panel-body">
-            {{ store.count }}
+            名称：{{park.attributes.name}}
           </div>
-          <div class="panel-footer" v-link="{ name:'devices', params:{id: store.id} }">
-            设备明细
+                    <div class="panel-body">
+            名称：{{park.attributes.name}}
+          </div>
+          <div class="panel-footer">
+            地址：{{park.attributes.addr}}
           </div>
         </div>
       </div>
     </div>
   </div>
+  <modal-add-park v-ref:m-add-park></modal-add-park>
 </template>
 <script>
+import ModalAddPark from './ModalAddPark'
+import * as actions from '../vuex/actions'
+
 export default {
+  components: {
+    ModalAddPark: ModalAddPark
+  },
+  async created () {
+    this.parklist = await this.GetParkList()
+    console.log('parklist:', this.parklist)
+  },
+  methods: {
+    async AddPark () {
+      await this.$refs.mAddPark.show()
+      this.parklist = await this.GetParkList()
+    }
+  },
   data () {
     return {
-      stores: [{
-        id: 0,
-        name: '库存',
-        count: 32
-      }, {
-        id: 1,
-        name: '南京红十字医院',
-        count: 2
-      }, {
-        id: 2,
-        name: '扬子医院',
-        count: 2
-      }]
+      parklist: []
     }
+  },
+  vuex: {
+    actions: actions
   }
 }
 </script>

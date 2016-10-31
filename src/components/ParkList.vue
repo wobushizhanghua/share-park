@@ -1,46 +1,71 @@
 <template>
-  <div id="page-wrapper">
+	<div id="page-wrapper">
+		<div class="row">
+			<h3>所有小区列表</h3>
+		</div>
+		<div class="row">
+			<div class="col-lg-4" v-for="park in parklist">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						名称：{{park.attributes.name}}
+					</div>
+					<div class="panel-body">
+						地址：{{park.attributes.addr}}
+					</div>
+					<div class="panel-footer">
+            <button class="btn btn-primary" @click="upload($index)">上传车位信息</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
     <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header">小区、停车场列表</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-4" v-for="store in stores">
-        <div :class="['panel', store.id===0 ? 'panel-info' : 'panel-success']">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{ store.name }}</h3>
-          </div>
-          <div class="panel-body">
-            {{ store.count }}
-          </div>
-          <div class="panel-footer" v-link="{ name:'devices', params:{id: store.id} }">
-            设备明细
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<h3>我的车位</h3>
+		</div>
+		<div class="row">
+			<div class="col-lg-4" v-for="park in parklist">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						名称：{{park.attributes.name}}
+					</div>
+					<div class="panel-body">
+						地址：{{park.attributes.addr}}
+					</div>
+					<div class="panel-footer">
+            <button class="btn btn-primary" @click="upload($index)">上传车位信息</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<modal-add-park v-ref:m-add-park></modal-add-park>
 </template>
 <script>
+import ModalAddPark from './ModalAddPark'
+import * as actions from '../vuex/actions'
+
 export default {
+  components: {
+    ModalAddPark: ModalAddPark
+  },
+  async created () {
+    this.parklist = await this.GetParkList()
+    console.log('parklist:', this.parklist)
+  },
+  methods: {
+    async AddPark () {
+      await this.$refs.mAddPark.show()
+      this.parklist = await this.GetParkList()
+    }
+  },
   data () {
     return {
-      stores: [{
-        id: 0,
-        name: '库存',
-        count: 32
-      }, {
-        id: 1,
-        name: '南京红十字医院',
-        count: 2
-      }, {
-        id: 2,
-        name: '扬子医院',
-        count: 2
-      }]
+      parklist: []
     }
+  },
+  vuex: {
+    actions: actions
   }
 }
 </script>
-

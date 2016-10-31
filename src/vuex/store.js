@@ -11,7 +11,12 @@ const state = {
     job: 1
   },
   logininfo: null,
-  errormsg: ''
+  errormsg: '',
+  parkinfo: {
+    name: '',
+    addr: ''
+  },
+  myparklist: null
 }
 
 const mutations = {

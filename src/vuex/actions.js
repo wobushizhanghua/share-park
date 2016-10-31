@@ -8,6 +8,7 @@ AV.init({
 })
 
 var Usercls = AV.Object.extend('user')
+var Parkcls = AV.Object.extend('park')
 
 const api = config.api
 
@@ -39,12 +40,31 @@ export const PostRegister = ({ dispatch, state }) => {
 
 export const PostJob = ({dispatch, state}) => {
   var user = new Usercls()
-  user.set('job', state.userinfo.job)
-  user.set('account_id', state.logininfo.account_id)
+  try {
+    user.set('job', state.userinfo.job)
+    user.set('account_id', state.logininfo.account_id)
+  } catch (e) {
+    console.log(e)
+  }
 
   return user.save().then(function (resp) {
     return { success: true, errormsg: '注册成功' }
   })
+}
+
+export const PostAddPark = async ({dispatch, state}, parkinfo) => {
+  try {
+    var user = new Parkcls()
+    user.set('account_id', state.logininfo.account_id)
+    user.set('name', parkinfo.name)
+    user.set('addr', parkinfo.addr)
+    var resp = await user.save()
+    console.log(resp)
+    return true
+  } catch (e) {
+    console.log('PostPark Error', e)
+    return false
+  }
 }
 
 export const PostLogin = async ({ dispatch, state }) => {
@@ -57,6 +77,8 @@ export const PostLogin = async ({ dispatch, state }) => {
   } catch (e) {
     return { success: false, errormsg: e.msg }
   }
+
+  dispatch('set_logininfo', response)
 
   try {
     var query = new AV.Query(Usercls)
@@ -77,6 +99,13 @@ export const PostLogout = ({ dispatch, state }) => {
   dispatch('rm_storage')
 }
 
-export const GetParkList = ({ dispatch, state }) => {
-
+export const GetParkList = async ({ dispatch, state }) => {
+  try {
+    var query = new AV.Query(Parkcls)
+    query.equalTo('account_id', state.logininfo.account_id)
+    return await query.find()
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }

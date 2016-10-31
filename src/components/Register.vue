@@ -23,7 +23,7 @@
           </div>
           <div class="form-group">
             <label>您的身份</label>
-            <select class="form-control" v-model="info.job">
+            <select class="form-control" v-model="info.job" number>
               <option value="1">车主</option>
               <option value="2">车位主</option>
               <option value="3">小区管理员</option>
